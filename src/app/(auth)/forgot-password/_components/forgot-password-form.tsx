@@ -1,11 +1,13 @@
 /* eslint-disable @next/next/no-img-element */
 'use client'
 
-import { z } from 'zod/v4'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useForm } from 'react-hook-form'
 
-import { Input } from '@/components/ui/input'
+import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
+import { Card, CardContent } from '@/components/ui/card'
+import { Input } from '@/components/ui/input'
 import {
   Form,
   FormControl,
@@ -15,47 +17,42 @@ import {
   FormMessage
 } from '@/components/ui/form'
 
-import { Card, CardContent } from '@/components/ui/card'
-import { useForm } from 'react-hook-form'
-import { Loader2 } from 'lucide-react'
-import Link from 'next/link'
-import { useRouter } from 'next/navigation'
-import { useState } from 'react'
-
+import { z } from 'zod/v4'
 import { toast } from 'sonner'
-import { cn } from '@/lib/utils'
-import { signIn } from '@/server/users'
+import { useState } from 'react'
+import { Loader2 } from 'lucide-react'
+
+import { authClient } from '@/lib/auth-client'
 
 const formSchema = z.object({
-  email: z.email(),
-  password: z.string().min(1, { error: 'Password is required ' })
+  email: z.email()
 })
 
-export const SignInForm = ({
+export function ForgotPasswordForm({
   className,
   ...props
-}: React.ComponentProps<'div'>) => {
-  const router = useRouter()
-
+}: React.ComponentProps<'div'>) {
   const [isPending, setPending] = useState(false)
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      email: '',
-      password: ''
+      email: ''
     }
   })
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setPending(true)
 
-    const { success, message } = await signIn(values.email, values.password)
+    const { error } = await authClient.forgetPassword({
+      email: values.email,
+      redirectTo: '/reset-password'
+    })
 
-    if (success) {
-      toast.success(message as string)
-      router.push('/')
+    if (error) {
+      toast.error(error.message)
     } else {
-      toast.error(message as string)
+      toast.success('Password reset email sent')
     }
 
     setPending(false)
@@ -72,9 +69,9 @@ export const SignInForm = ({
             >
               <div className='flex flex-col gap-6'>
                 <div className='flex flex-col items-center text-center'>
-                  <h1 className='text-2xl font-bold'>Welcome back</h1>
+                  <h1 className='text-2xl font-bold'>Forgot Password</h1>
                   <p className='text-muted-foreground text-balance'>
-                    Login to your account
+                    Enter your email to reset your password
                   </p>
                 </div>
                 <div className='grid gap-3'>
@@ -96,57 +93,23 @@ export const SignInForm = ({
                     )}
                   />
                 </div>
-                <div className='grid gap-3'>
-                  <FormField
-                    control={form.control}
-                    name='password'
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Password</FormLabel>
-                        <FormControl>
-                          <Input placeholder='********' {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <Link
-                    href='/forgot-password'
-                    className='ml-auto text-sm text-blue-600 underline-offset-4 hover:underline'
-                  >
-                    Forgot your password?
-                  </Link>
-                </div>
 
                 <Button type='submit' className='w-full' disabled={isPending}>
                   {isPending ? (
                     <Loader2 className='size-4 animate-spin' />
                   ) : (
-                    'Login'
+                    'Reset Password'
                   )}
                 </Button>
-              </div>
-              <div className='py-2 text-center text-sm'>
-                Don&apos;t have an account?{' '}
-                <Link
-                  href='/sign-up'
-                  className='text-blue-600 underline underline-offset-4'
-                >
-                  Sign up
-                </Link>
               </div>
             </form>
           </Form>
           <div className='relative hidden flex-col items-center justify-center gap-y-4 bg-radial from-green-700 to-green-900 md:flex'>
             <img src='/logo.svg' alt='image' className='h-[92px] w-[92px]' />
-            <p className='text-2xl font-semibold text-white'>Garage 4</p>
+            <p className='text-2xl font-semibold text-white'>Meet.AI</p>
           </div>
         </CardContent>
       </Card>
-      <div className='text-muted-foreground *:[a]:hover:text-primary text-center text-xs text-balance *:[a]:underline *:[a]:underline-offset-4'>
-        By continuing, you agree to our <Link href='#'>Terms of Service</Link>{' '}
-        and <Link href='#'>Privacy Policy</Link>.
-      </div>
     </div>
   )
 }
