@@ -1,20 +1,19 @@
-import { HomeView } from '@/components/home-view'
 import { auth } from '@/lib/auth'
 
 import { headers } from 'next/headers'
 import { redirect } from 'next/navigation'
+import React from 'react'
+import { SignUpForm } from './_components/sign-up-form'
 
-export default async function Home() {
+const SignupPage = async () => {
   const headersList = await headers()
 
   const session = await auth.api.getSession({
     headers: headersList
   })
 
-  if (!session) redirect('/sign-in')
-  return (
-    <div className=''>
-      <HomeView />
-    </div>
-  )
+  if (!!session) redirect('/')
+  return <SignUpForm />
 }
+
+export default SignupPage
