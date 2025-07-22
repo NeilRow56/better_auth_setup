@@ -111,14 +111,18 @@ export const SignInForm = ({
                     )}
                   />
                   <Link
-                    href='/forgot-password'
+                    href='/auth/forgot-password'
                     className='ml-auto text-sm text-blue-600 underline-offset-4 hover:underline'
                   >
                     Forgot your password?
                   </Link>
                 </div>
 
-                <Button type='submit' className='w-full' disabled={isPending}>
+                <Button
+                  type='submit'
+                  className='w-full cursor-pointer'
+                  disabled={isPending}
+                >
                   {isPending ? (
                     <Loader2 className='size-4 animate-spin' />
                   ) : (
@@ -129,7 +133,7 @@ export const SignInForm = ({
               <div className='py-2 text-center text-sm'>
                 Don&apos;t have an account?{' '}
                 <Link
-                  href='/sign-up'
+                  href='/auth/sign-up'
                   className='text-blue-600 underline underline-offset-4'
                 >
                   Sign up

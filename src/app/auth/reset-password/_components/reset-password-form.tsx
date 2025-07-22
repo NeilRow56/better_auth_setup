@@ -67,7 +67,7 @@ export function ResetPasswordForm({
       toast.error(error.message)
     } else {
       toast.success('Password reset successfully')
-      router.push('/sign-in')
+      router.push('/auth/sign-in')
     }
 
     setPending(false)
@@ -120,7 +120,11 @@ export function ResetPasswordForm({
                       )}
                     />
                   </div>
-                  <Button type='submit' className='w-full' disabled={isPending}>
+                  <Button
+                    type='submit'
+                    className='w-full cursor-pointer'
+                    disabled={isPending}
+                  >
                     {isPending ? (
                       <Loader2 className='size-4 animate-spin' />
                     ) : (

@@ -46,7 +46,7 @@ export function ForgotPasswordForm({
 
     const { error } = await authClient.forgetPassword({
       email: values.email,
-      redirectTo: '/reset-password'
+      redirectTo: '/auth/reset-password'
     })
 
     if (error) {
@@ -94,7 +94,11 @@ export function ForgotPasswordForm({
                   />
                 </div>
 
-                <Button type='submit' className='w-full' disabled={isPending}>
+                <Button
+                  type='submit'
+                  className='w-full cursor-pointer'
+                  disabled={isPending}
+                >
                   {isPending ? (
                     <Loader2 className='size-4 animate-spin' />
                   ) : (

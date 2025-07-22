@@ -172,7 +172,11 @@ export const SignUpForm = ({
                   />
                 </div>
 
-                <Button type='submit' className='w-full' disabled={isPending}>
+                <Button
+                  type='submit'
+                  className='w-full cursor-pointer'
+                  disabled={isPending}
+                >
                   {isPending ? (
                     <Loader2 className='size-4 animate-spin' />
                   ) : (
@@ -183,7 +187,7 @@ export const SignUpForm = ({
               <div className='py-2 text-center text-sm'>
                 Already have an account?{' '}
                 <Link
-                  href='/sign-in'
+                  href='/auth/sign-in'
                   className='text-blue-600 underline underline-offset-4'
                 >
                   Sign in

@@ -49,10 +49,10 @@ export default function RootLayout({
             toastOptions={{
               unstyled: true,
               classNames: {
-                error: 'bg-red-600',
+                error: 'text-red-600',
                 success: 'text-green-700',
                 warning: 'text-yellow-700',
-                info: 'bg-blue-700'
+                info: 'text-blue-700'
               }
             }}
           />
