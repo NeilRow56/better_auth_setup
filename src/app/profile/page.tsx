@@ -13,6 +13,8 @@ export default async function Page() {
 
   if (!session) redirect('/auth/sign-in')
 
+  const role = session.user.role
+
   return (
     <div className='container mx-auto max-w-screen-lg space-y-8 px-8 py-16'>
       <div className='space-y-4'>
@@ -29,6 +31,7 @@ export default async function Page() {
           {JSON.stringify(session, null, 2)}
         </pre>
       </div>
+      <div>User Role: {role}</div>
     </div>
   )
 }
