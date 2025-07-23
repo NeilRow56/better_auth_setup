@@ -7,6 +7,8 @@ import { Resend } from 'resend'
 import { env } from './env'
 import VerifyEmail from '@/components/emails/verify-email'
 import ForgotPasswordEmail from '@/components/emails/reset-password'
+import { ac, roles } from '@/lib/permissions'
+import { admin } from 'better-auth/plugins'
 
 const resend = new Resend(env.RESEND_API_KEY)
 
@@ -62,7 +64,15 @@ export const auth = betterAuth({
       // session, user and verification table names already match the database names
     }
   }),
-  plugins: [nextCookies()]
+  plugins: [
+    nextCookies(),
+    admin({
+      defaultRole: 'USER',
+      adminRoles: ['ADMIN', 'MANAGER'],
+      ac,
+      roles
+    })
+  ]
 })
 
 export type ErrorCode = keyof typeof auth.$ERROR_CODES | 'UNKNOWN'
