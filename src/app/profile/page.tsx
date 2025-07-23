@@ -24,8 +24,15 @@ export default async function Page() {
           </Link>
         </Button>
         <h1 className='text-3xl font-bold'>Profile</h1>
+        <div className='flex items-center gap-2'>
+          {session.user.role === 'ADMIN' && (
+            <Button size='sm' asChild>
+              <Link href='/admin/dashboard'>Admin Dashboard</Link>
+            </Button>
+          )}
 
-        <SignOutButton />
+          <SignOutButton />
+        </div>
 
         <pre className='overflow-clip text-sm'>
           {JSON.stringify(session, null, 2)}
