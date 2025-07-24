@@ -8,7 +8,7 @@ import { env } from './env'
 import VerifyEmail from '@/components/emails/verify-email'
 import ForgotPasswordEmail from '@/components/emails/reset-password'
 import { ac, roles } from '@/lib/permissions'
-import { admin } from 'better-auth/plugins'
+import { admin, organization } from 'better-auth/plugins'
 
 const resend = new Resend(env.RESEND_API_KEY)
 
@@ -66,9 +66,11 @@ export const auth = betterAuth({
   }),
   plugins: [
     nextCookies(),
+    organization({}),
+
     admin({
       defaultRole: 'USER',
-      adminRoles: ['ADMIN', 'MANAGER'],
+      adminRoles: ['ADMIN', 'MANAGER', 'USER'],
       ac,
       roles
     })

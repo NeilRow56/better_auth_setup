@@ -1,18 +1,13 @@
 import { SignOutButton } from '@/components/sign-out-button'
 import { buttonVariants } from '@/components/ui/button'
-import { auth } from '@/lib/auth'
+
 import { ArrowLeft } from 'lucide-react'
-import { headers } from 'next/headers'
+
 import Link from 'next/link'
-import { redirect } from 'next/navigation'
+
 import React from 'react'
 
 export default async function DashboardPage() {
-  const session = await auth.api.getSession({
-    headers: await headers()
-  })
-
-  if (!session) redirect('/auth/sign-in')
   return (
     <div className='container mx-auto max-w-screen-lg space-y-8 px-8 py-16'>
       <div className='flex flex-col space-y-8'>
@@ -46,7 +41,7 @@ export default async function DashboardPage() {
             </div>
           </div>
         </div>
-        <h1 className='text-3xl'>Dashboard Page</h1>
+        <h1 className='text-3xl'>Public Dashboard Page - not protected</h1>
 
         <div className='w-full'>
           <SignOutButton />

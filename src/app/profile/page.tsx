@@ -6,7 +6,7 @@ import { headers } from 'next/headers'
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
 
-export default async function Page() {
+export default async function ProfilePage() {
   const session = await auth.api.getSession({
     headers: await headers()
   })
