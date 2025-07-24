@@ -8,6 +8,29 @@ import { revalidatePath } from 'next/cache'
 import { headers } from 'next/headers'
 import { redirect } from 'next/navigation'
 
+export const getCurrentUser = async () => {
+  const session = await auth.api.getSession({
+    headers: await headers()
+  })
+
+  if (!session) {
+    redirect('/login')
+  }
+
+  const currentUser = await db.query.UsersTable.findFirst({
+    where: eq(UsersTable.id, session.user.id)
+  })
+
+  if (!currentUser) {
+    redirect('/auth-sign-in')
+  }
+
+  return {
+    ...session,
+    currentUser
+  }
+}
+
 export const signIn = async (email: string, password: string) => {
   try {
     await auth.api.signInEmail({
