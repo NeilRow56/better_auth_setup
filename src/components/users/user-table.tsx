@@ -8,18 +8,13 @@ import {
   TableHeader,
   TableRow
 } from '@/components/ui/table'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue
-} from '@/components/ui/select'
+
 import { findAllUsers } from '@/server/users'
-import { roles } from '@/db/schema'
+import { Role } from '@/db/schema'
 import { Button } from '../ui/button'
 import { PencilIcon } from 'lucide-react'
 import DeleteUserButton from './delete-user-button'
+import { UserRoleSelect } from './user-role-select'
 
 export async function UserTable() {
   const users = await findAllUsers()
@@ -49,18 +44,7 @@ export async function UserTable() {
             <TableCell>{user.name}</TableCell>
             <TableCell>{user.email}</TableCell>
             <TableCell>
-              <Select>
-                <SelectTrigger className='w-[180px]'>
-                  <SelectValue placeholder={user.role} />
-                </SelectTrigger>
-                <SelectContent>
-                  {roles.map(role => (
-                    <SelectItem key={role} value={role}>
-                      {role}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              <UserRoleSelect userId={user.id} role={user.role as Role} />
             </TableCell>
             <TableCell className='space-x-2 text-right'>
               <Button variant='ghost' className='cursor-pointer'>

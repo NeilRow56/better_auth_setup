@@ -14,7 +14,7 @@ export const getCurrentUser = async () => {
   })
 
   if (!session) {
-    redirect('/login')
+    redirect('/auth/sign-in')
   }
 
   const currentUser = await db.query.UsersTable.findFirst({
@@ -22,7 +22,7 @@ export const getCurrentUser = async () => {
   })
 
   if (!currentUser) {
-    redirect('/auth-sign-in')
+    redirect('/auth/sign-in')
   }
 
   return {
@@ -60,8 +60,7 @@ export const signUp = async (email: string, password: string, name: string) => {
       body: {
         name,
         email,
-        password,
-        role: 'USER'
+        password
       }
     })
 

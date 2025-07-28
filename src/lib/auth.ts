@@ -44,7 +44,8 @@ export const auth = betterAuth({
   user: {
     additionalFields: {
       role: {
-        type: ['ADMIN', 'MANAGER', 'USER']
+        type: ['ADMIN', 'MANAGER', 'USER'],
+        input: false
       }
     }
   },
@@ -66,7 +67,7 @@ export const auth = betterAuth({
   }),
   plugins: [
     nextCookies(),
-    organization({}),
+    organization(),
 
     admin({
       defaultRole: 'USER',

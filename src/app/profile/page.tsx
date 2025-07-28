@@ -3,8 +3,11 @@ import { Button } from '@/components/ui/button'
 import { auth } from '@/lib/auth'
 import { ArrowLeftIcon } from 'lucide-react'
 import { headers } from 'next/headers'
+import Image from 'next/image'
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
+import { ResetPasswordForm } from '../auth/reset-password/_components/reset-password-form'
+import { UpdateUserForm } from '@/components/forms/update-user-form'
 
 export default async function ProfilePage() {
   const session = await auth.api.getSession({
@@ -34,9 +37,37 @@ export default async function ProfilePage() {
           <SignOutButton />
         </div>
 
+        {session.user.image ? (
+          <Image
+            src={session.user.image}
+            alt='User Image'
+            className='border-primary size-24 rounded-md border object-cover'
+          />
+        ) : (
+          <div className='border-primary bg-primary text-primary-foreground flex size-24 items-center justify-center rounded-md border'>
+            <span className='text-lg font-bold uppercase'>
+              {session.user.name.slice(0, 2)}
+            </span>
+          </div>
+        )}
+
         <pre className='overflow-clip text-sm'>
           {JSON.stringify(session, null, 2)}
         </pre>
+        <div className='space-y-4 rounded-b-md border border-t-8 border-blue-600 p-4'>
+          <h2 className='text-2xl font-bold'>Update User</h2>
+
+          <UpdateUserForm
+            name={session.user.name}
+            image={session.user.image ?? ''}
+          />
+        </div>
+
+        <div className='space-y-4 rounded-b-md border border-t-8 border-red-600 p-4'>
+          <h2 className='text-2xl font-bold'>Change Password</h2>
+
+          <ResetPasswordForm />
+        </div>
       </div>
       <div>User Role: {role}</div>
     </div>

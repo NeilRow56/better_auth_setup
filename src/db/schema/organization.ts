@@ -2,7 +2,6 @@ import { relations } from 'drizzle-orm'
 import { pgTable as table } from 'drizzle-orm/pg-core'
 import * as t from 'drizzle-orm/pg-core'
 import { member } from './member'
-// import { relations } from 'drizzle-orm'
 
 export const organization = table('organization', {
   id: t.text('id').primaryKey(),

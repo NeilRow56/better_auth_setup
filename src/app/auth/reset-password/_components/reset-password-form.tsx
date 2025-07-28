@@ -22,8 +22,8 @@ import { toast } from 'sonner'
 import { useState } from 'react'
 import { Loader2 } from 'lucide-react'
 
-import { authClient } from '@/lib/auth-client'
 import { useRouter, useSearchParams } from 'next/navigation'
+import { resetPassword } from '@/lib/auth-client'
 
 const formSchema = z.object({
   password: z.string().min(8, { error: 'Password should be >= 8 Characters ' }),
@@ -58,7 +58,7 @@ export function ResetPasswordForm({
       return
     }
 
-    const { error } = await authClient.resetPassword({
+    const { error } = await resetPassword({
       newPassword: values.password,
       token
     })
